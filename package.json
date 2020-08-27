@@ -1,0 +1,21 @@
+{
+  "name": "new-simple-node-js-app-1",
+  "version": "1.0.0",
+  "description": "simple app node js CRUD",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "mongodb",
+    "restapi",
+    "crud"
+  ],
+  "author": "mns",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.10.0"
+  }
+}
