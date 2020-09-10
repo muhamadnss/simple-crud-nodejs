@@ -1,17 +1,19 @@
 //index.js
 //Import Express
 let express = require('express')
-//Import routes
-let apiRoutes = require("./router")
+const bodyParser = require('body-parser');
 //Start App
 let app = express();
-//import body parser
-let bodyParser = require('body-parser');
-//import mongoose
-let mongoose = require('mongoose');
-
+// Configuring the database
+var mongoose = require('mongoose');
+const dbConfig = require('./config/database.config.js');
 //Assign port
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 2002;
+
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }))
+// parse requests of content-type - application/json
+app.use(bodyParser.json())
 // Welcome message
 app.get('/', (req, res) => res.send('Welcome to Express'));
 // Launch app to the specified port
@@ -19,20 +21,13 @@ app.listen(port, function() {
     console.log("Running FirstRest on Port "+ port);
 })
 
-//configure bodyparser to hande the post requests
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
+mongoose.connect(dbConfig.url, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => {
+  console.log("Successfully connected to the database");    
+}).catch(err => {
+  console.log('Could not connect to the database. Exiting now...', err);
+  process.exit();
+});
 
-app.use(bodyParser.json());
-//Use API routes in the App
-app.use('/api', apiRoutes)
-//connect to mongoose
-const dbPath = 'mongodb://localhost/firstrest';
-const options = {useNewUrlParser: true, useUnifiedTopology: true}
-const mongo = mongoose.connect(dbPath, options);
-mongo.then(() => {
-    console.log('connected');
-}, error => {
-    console.log(error, 'error');
-})
